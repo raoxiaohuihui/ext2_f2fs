@@ -6,8 +6,8 @@
   (C) 2001 Andreas Gruenbacher, <a.gruenbacher@computer.org>
 */
 
-#include <linux/init.h>
-#include <linux/xattr.h>
+#include <android_linux/init.h>
+#include <android_linux/xattr.h>
 
 /* Magic value in attribute blocks */
 #define EXT2_XATTR_MAGIC		0xEA020000

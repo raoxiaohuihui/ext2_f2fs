@@ -4,7 +4,7 @@
 KVER ?= $(shell uname -r)
 KERNELDIR:=/lib/modules/$(KVER)/build
 PWD:=$(shell pwd)
-
+CONFIG_EXT2_FS:=m
 obj-$(CONFIG_EXT2_FS) += ext2.o
 
 ext2-y := balloc.o dir.o file.o ialloc.o inode.o \
