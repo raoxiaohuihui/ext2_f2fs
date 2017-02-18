@@ -779,9 +779,25 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
 				    ext2_get_block);
 }
 
-static int ext2_writepage(struct page *page, struct writeback_control *wbc)
+static int ext2_writepage(struct ext2_sb_info *sbi, struct page *page, struct writeback_control *wbc)
 {
-	return block_write_full_page(page, ext2_get_block, wbc);
+    strunt dedupe* dedupe = NULL;
+    u8 hash[16];
+    ext2_dedupe_calc_hash(page,hash,&sbi->dedupe_info);
+
+    spin_lock(&sbi->dedupe_info.lock);
+    dedupe = ext2_dedupe_search(hash,&sbi->dedupe_info);
+    if(dedupe){
+
+        dedupe->ref++;
+        spin_unlock(&sbi->dedupe_info.lock);
+        return 1;
+    }else{
+        ext2_dedupe_add(hash,&sbi->dedupe_info,NULL);
+        spin_unlock(&sbi->dedupe_info.lock);
+	    return block_write_full_page(page, ext2_get_block, wbc);
+    }
+
 }
 
 static int ext2_readpage(struct file *file, struct page *page)

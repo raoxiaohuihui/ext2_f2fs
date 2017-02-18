@@ -15,6 +15,7 @@
 #include <linux/blockgroup_lock.h>
 #include <linux/percpu_counter.h>
 #include <linux/rbtree.h>
+#include "dedupe.h"
 
 /* XXX Here for now... not interested in restructing headers JUST now */
 
@@ -111,6 +112,7 @@ struct ext2_sb_info {
 	 * of the mount options.
 	 */
 	spinlock_t s_lock;
+    struct  dedupe_info dedupe_info;
 };
 
 static inline spinlock_t *
